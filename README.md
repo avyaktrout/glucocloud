@@ -1,6 +1,6 @@
-# GlucoCloud API
+# GlucoCloud
 
-A free diabetes health tracker built with Spring Boot. Track blood glucose, meals, and medications with analytics and data export capabilities.
+A complete full-stack diabetes health tracker with Spring Boot backend and React frontend. Track blood glucose, meals, and medications with analytics and data export capabilities.
 
 ## 🚀 Free Deployment Strategy
 
@@ -11,6 +11,7 @@ A free diabetes health tracker built with Spring Boot. Track blood glucose, meal
 ## 🛠️ Tech Stack
 
 - **Backend**: Spring Boot 3 + Java 17
+- **Frontend**: React 18 + Bootstrap 5
 - **Database**: H2 (dev) / PostgreSQL (prod)
 - **Authentication**: JWT with Spring Security
 - **Image Storage**: Local (dev) / Cloudinary (prod)
@@ -51,37 +52,54 @@ A free diabetes health tracker built with Spring Boot. Track blood glucose, meal
 - [x] Environment configuration
 - [x] Free PostgreSQL production database
 
-### Phase 6 (Days 11-12) - Future
-- [ ] Simple React frontend dashboard
+### Phase 6 (Days 11-12) ✅
+- [x] Complete React frontend dashboard
+- [x] User authentication and login interface
+- [x] Glucose, meal, and medication management UI
+- [x] Analytics dashboard with visualizations
+- [x] Data export functionality with UI
+- [x] Responsive design and navigation
+
+### Phase 7 (Future) - Advanced Features
 - [ ] Real-time notifications and reminders
 - [ ] Advanced AI predictions and insights
 - [ ] Mobile app considerations
+- [ ] Healthcare provider portal
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 - Java 17+
 - Maven 3.6+
+- Node.js 16+
+- npm 8+
 
-### Run Locally
+### Run Full Application Locally
 ```bash
 # Clone and navigate
 cd GlucoCloud
 
-# Run the application
-mvn spring-boot:run
+# Terminal 1 - Run Backend
+mvn spring-boot:run -Dspring-boot.run.arguments="--server.port=8082"
 
-# Access H2 Console: http://localhost:8080/h2-console
+# Terminal 2 - Run Frontend (in new terminal)
+cd frontend
+npm install
+PORT=3001 npm start
+
+# Access Application: http://localhost:3001
+# Demo login: demo@glucocloud.com / demo123
+
+# Access H2 Console: http://localhost:8082/h2-console
 # JDBC URL: jdbc:h2:mem:glucocloud
-# Username: sa
-# Password: password
+# Username: sa / Password: password
 ```
 
 ### Test Authentication
 
 **Register a user:**
 ```bash
-curl -X POST http://localhost:8080/auth/register \
+curl -X POST http://localhost:8082/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
     "email": "test@example.com",
@@ -93,7 +111,7 @@ curl -X POST http://localhost:8080/auth/register \
 
 **Login:**
 ```bash
-curl -X POST http://localhost:8080/auth/login \
+curl -X POST http://localhost:8082/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "email": "test@example.com",
@@ -103,7 +121,7 @@ curl -X POST http://localhost:8080/auth/login \
 
 **Get current user (with JWT token):**
 ```bash
-curl -X GET http://localhost:8080/auth/me \
+curl -X GET http://localhost:8082/api/auth/me \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
@@ -155,62 +173,62 @@ src/main/java/com/glucocloud/api/
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/auth/register` | Register new user |
-| POST | `/auth/login` | User login |
-| GET | `/auth/me` | Get current user info |
+| POST | `/api/auth/register` | Register new user |
+| POST | `/api/auth/login` | User login |
+| GET | `/api/auth/me` | Get current user info |
 
 ### Glucose Endpoints ✅
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/glucose` | Create glucose reading |
-| GET | `/glucose` | List readings (with optional date filters) |
-| GET | `/glucose/{id}` | Get specific reading |
-| PUT | `/glucose/{id}` | Update reading |
-| DELETE | `/glucose/{id}` | Delete reading |
+| POST | `/api/glucose` | Create glucose reading |
+| GET | `/api/glucose` | List readings (with optional date filters) |
+| GET | `/api/glucose/{id}` | Get specific reading |
+| PUT | `/api/glucose/{id}` | Update reading |
+| DELETE | `/api/glucose/{id}` | Delete reading |
 
 ### Meal Endpoints ✅
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/meals` | Create meal entry |
-| GET | `/meals` | List meals (with optional date filters) |
-| GET | `/meals/{id}` | Get specific meal |
-| PUT | `/meals/{id}` | Update meal |
-| DELETE | `/meals/{id}` | Delete meal |
+| POST | `/api/meals` | Create meal entry |
+| GET | `/api/meals` | List meals (with optional date filters) |
+| GET | `/api/meals/{id}` | Get specific meal |
+| PUT | `/api/meals/{id}` | Update meal |
+| DELETE | `/api/meals/{id}` | Delete meal |
 
 ### Medication Endpoints ✅
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/medications` | Create medication entry |
-| GET | `/medications` | List medications (with optional date filters) |
-| GET | `/medications/{id}` | Get specific medication |
-| PUT | `/medications/{id}` | Update medication |
-| DELETE | `/medications/{id}` | Delete medication |
-| GET | `/medications/names` | Get unique medication names |
+| POST | `/api/medications` | Create medication entry |
+| GET | `/api/medications` | List medications (with optional date filters) |
+| GET | `/api/medications/{id}` | Get specific medication |
+| PUT | `/api/medications/{id}` | Update medication |
+| DELETE | `/api/medications/{id}` | Delete medication |
+| GET | `/api/medications/names` | Get unique medication names |
 
 ### Analytics Endpoints ✅
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/analytics/glucose/summary` | Detailed glucose statistics |
-| GET | `/analytics/glucose/flags` | Pattern detection and alerts |
-| GET | `/analytics/meals/summary` | Meal nutrition analysis |
-| GET | `/analytics/medications/summary` | Medication adherence analysis |
-| GET | `/analytics/meal-glucose-correlations` | Meal impact on glucose |
-| GET | `/analytics/dashboard` | Comprehensive health dashboard |
+| GET | `/api/analytics/glucose/summary` | Detailed glucose statistics |
+| GET | `/api/analytics/glucose/flags` | Pattern detection and alerts |
+| GET | `/api/analytics/meals/summary` | Meal nutrition analysis |
+| GET | `/api/analytics/medications/summary` | Medication adherence analysis |
+| GET | `/api/analytics/meal-glucose-correlations` | Meal impact on glucose |
+| GET | `/api/analytics/dashboard` | Comprehensive health dashboard |
 
 ### Data Export Endpoints ✅
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/export/glucose` | Export glucose readings to CSV |
-| GET | `/export/meals` | Export meals data to CSV |
-| GET | `/export/medications` | Export medications data to CSV |
-| GET | `/export/comprehensive-report` | Export complete health report |
-| GET | `/export/all-data` | Export all data (comprehensive report) |
-| GET | `/export/formats` | Get available export formats info |
+| GET | `/api/export/glucose` | Export glucose readings to CSV |
+| GET | `/api/export/meals` | Export meals data to CSV |
+| GET | `/api/export/medications` | Export medications data to CSV |
+| GET | `/api/export/comprehensive-report` | Export complete health report |
+| GET | `/api/export/all-data` | Export all data (comprehensive report) |
+| GET | `/api/export/formats` | Get available export formats info |
 
 ## 🧪 Test with Demo Data
 
@@ -218,7 +236,7 @@ The app includes sample data for testing:
 
 **Demo User Login:**
 ```bash
-curl -X POST http://localhost:8080/auth/login \
+curl -X POST http://localhost:8082/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "email": "demo@glucocloud.com",
@@ -228,7 +246,7 @@ curl -X POST http://localhost:8080/auth/login \
 
 **Add a glucose reading:**
 ```bash
-curl -X POST http://localhost:8080/glucose \
+curl -X POST http://localhost:8082/api/glucose \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -d '{
@@ -241,13 +259,13 @@ curl -X POST http://localhost:8080/glucose \
 
 **Get glucose summary:**
 ```bash
-curl -X GET "http://localhost:8080/analytics/glucose/summary" \
+curl -X GET "http://localhost:8082/api/analytics/glucose/summary" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
 **Add a meal:**
 ```bash
-curl -X POST http://localhost:8080/meals \
+curl -X POST http://localhost:8082/api/meals \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -d '{
@@ -262,7 +280,7 @@ curl -X POST http://localhost:8080/meals \
 
 **Add a medication:**
 ```bash
-curl -X POST http://localhost:8080/medications \
+curl -X POST http://localhost:8082/api/medications \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -d '{
@@ -277,33 +295,33 @@ curl -X POST http://localhost:8080/medications \
 
 **Get comprehensive dashboard:**
 ```bash
-curl -X GET "http://localhost:8080/analytics/dashboard" \
+curl -X GET "http://localhost:8082/api/analytics/dashboard" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
 **Get meal-glucose correlations:**
 ```bash
-curl -X GET "http://localhost:8080/analytics/meal-glucose-correlations" \
+curl -X GET "http://localhost:8082/api/analytics/meal-glucose-correlations" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
 **Export glucose data to CSV:**
 ```bash
-curl -X GET "http://localhost:8080/export/glucose" \
+curl -X GET "http://localhost:8082/api/export/glucose" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   --output glucose_readings.csv
 ```
 
 **Export comprehensive health report:**
 ```bash
-curl -X GET "http://localhost:8080/export/comprehensive-report" \
+curl -X GET "http://localhost:8082/api/export/comprehensive-report" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   --output health_report.csv
 ```
 
 **Export with date range:**
 ```bash
-curl -X GET "http://localhost:8080/export/meals?from=2024-01-01T00:00:00&to=2024-01-31T23:59:59" \
+curl -X GET "http://localhost:8082/api/export/meals?from=2024-01-01T00:00:00&to=2024-01-31T23:59:59" \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   --output meals_january.csv
 ```
@@ -369,6 +387,14 @@ GlucoCloud is **production-ready** and can be deployed **100% FREE**!
 
 ---
 
-**Day 9-10 Complete! GlucoCloud is now live and accessible worldwide!** 🌐🎉
+**Complete Full-Stack Application! 🎉**
 
-**Ready for Day 11-12: React Frontend Dashboard & Advanced Features?** 🎨📱
+GlucoCloud is now a **complete full-stack diabetes management application** with:
+- ✅ **Working Spring Boot Backend** (port 8082)
+- ✅ **Complete React Frontend** (port 3001)
+- ✅ **User Authentication & Dashboard**
+- ✅ **Glucose, Meal & Medication Tracking**
+- ✅ **Advanced Analytics & Data Export**
+- ✅ **Ready for Production Deployment**
+
+**🚀 Access your complete application at: http://localhost:3001**
