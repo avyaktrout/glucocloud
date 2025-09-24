@@ -13,7 +13,7 @@ services:
         fromDatabase:
           name: glucocloud-db
           property: connectionString
-    autoDeploy: false
+    autoDeploy: true
 
 databases:
   - name: glucocloud-db
