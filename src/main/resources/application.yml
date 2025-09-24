@@ -64,6 +64,10 @@ spring:
 jwt:
   secret: ${JWT_SECRET}
 
+# Server Configuration for Production
+server:
+  port: ${PORT:8080}
+
 logging:
   level:
     com.glucocloud.api: INFO
