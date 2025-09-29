@@ -9,7 +9,13 @@ services:
         value: production
       - key: JWT_SECRET
         generateValue: true
+      - key: PORT
+        value: 8080
       - key: DATABASE_URL
+        fromDatabase:
+          name: glucocloud-db
+          property: connectionString
+      - key: JDBC_DATABASE_URL
         fromDatabase:
           name: glucocloud-db
           property: connectionString

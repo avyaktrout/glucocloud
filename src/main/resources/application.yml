@@ -46,7 +46,7 @@ spring:
       on-profile: production
 
   datasource:
-    url: jdbc:${DATABASE_URL}
+    url: ${JDBC_DATABASE_URL}
     driver-class-name: org.postgresql.Driver
 
   jpa:
